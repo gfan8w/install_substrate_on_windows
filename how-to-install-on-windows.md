@@ -319,12 +319,12 @@ d-----        2022/4/24     14:55                target
 
 笔者本地的Windows电脑的IP地址是`192.168.0.101`，Mac电脑的IP地址是`192.168.0.100`。
 
-1. 首先，生成2个新账户，作为运行链时的出块和固化(finalize)块的账号。生成账号使用`subkey`，可以参考[Subkey](https://docs.substrate.io/v3/tools/subkey/) 来单独安装该命令。安装完成后，我们执行 `subkey generate --scheme sr25519` 来生成 `auro` 的key，用 `subkey inspect --scheme ed25519 "..助记词..."` 来解析一个助记词生成 `grandpa` 的key
+1. 首先，生成2个新账户，作为运行链时的出块和固化(finalize)块的账号。生成账号使用`subkey`，可以参考[Subkey](https://docs.substrate.io/v3/tools/subkey/) 来单独安装该命令。安装完成后，我们执行 `subkey generate --scheme sr25519` 来生成 `aura` 的key，用 `subkey inspect --scheme ed25519 "..助记词..."` 来解析一个助记词生成 `grandpa` 的key
 
 ```
 # 第一组key生成
 
-# 这个key是auro使用的，
+# 这个key是aura使用的，
 # 出块使用，填入到chain-spec中，使用的是SS58格式的公钥地址。
 # hex格式的Public key (hex)公钥地址用于 curl 做RPC调用插入到运行节点
 $ subkey generate --scheme sr25519
@@ -335,7 +335,7 @@ Secret phrase:       behave seat jewel opera timber post pulp open match erase h
   Public key (SS58): 5E1Y1Bz5GJKB2HA2y2SL5k5Rw3ULgRcD55TbuxtGKTfSKN7c
   SS58 Address:      5E1Y1Bz5GJKB2HA2y2SL5k5Rw3ULgRcD55TbuxtGKTfSKN7c
 
-# 这个key是grandpa使用，是固化块使用的，格式是 ed25519 ，它是直接使用的上一步的助记词，而非随机生成，它与之对应的aurokey是相同秘钥的
+# 这个key是grandpa使用，是固化块使用的，格式是 ed25519 ，它是直接使用的上一步的助记词，而非随机生成，它与之对应的aurakey是相同秘钥的
 $ subkey inspect --scheme ed25519 "behave seat jewel opera timber post pulp open match erase high chicken"
 Secret phrase:       behave seat jewel opera timber post pulp open match erase high chicken
   Secret seed:       0x2521ed118858a28d48620b207a0dd410a412358e1010c862993ab67ccd9ed34d
@@ -403,7 +403,7 @@ Secret phrase:       they diet rebuild candy buzz purchase barely smoke small aw
         "authorities": [
           [
               // 这是需要修改的账号，代码里hardcode的是Alice和Bob，这里已经改为自己生成的 ed25519 格式的 SS58 公钥账号，
-              // 账号与auro里的第一个对应，每个账号匹配对应，但格式不同。
+              // 账号与aura里的第一个对应，每个账号匹配对应，但格式不同。
               // 本示例是2个节点的网络，这里需要2个账号，这里的账号用于固化finalize区块。 另一个数值 1 是权重，表示这里2个账号权重一样
             "5FEJow4hfotPWBAxbEzXpzRmw9rDjaqHLLk11Dq2pBEdutpX", 
             1
@@ -424,7 +424,7 @@ Error: Input("Error parsing spec file: expected value at line 1 column 1")
 ```
 发现有报错，但相同的文件在Mac上执行成功，进过一番调查发现是文件编码不对，在Windows平台上用 `node-template.exe` 生成的 `local.json` 文件显示是 `UCS-2 LE BOM` 格式，它其实就是 `UTF-16 little endian` ，我们需要改为 `UTF-8` （这里是UTF-8，不是UTF-8-BOM，这里不带BOM的）。还有文件的结尾换行符，在windows平台上是 `CRLF` ，也可以改为 `LF` ，但这改不改似乎关系不大。生成出来的 `local_raw.json` 文件，我们依然要修改它的编码，记住，我们这里是放在Windows上生成这些文件的，这些文件随后会被分发给需要加入这条链的各个独立节点。具有相同文件的，即他们运行相同 `运行时runtime` ，他们才会是同一个网络。
 
-将 `local_raw.json`和 `local.json`拷贝到Mac电脑上。 这里我们使用这个 `spec chain` 文件来启动节点，运行方式加上 `--execution wasm` , 那他们就是以这个json文件中的code来运行业务逻辑的。
+将 `local_raw.json`和 `local.json`拷贝到Mac电脑上。 这里我们使用这个 `spec chain` 文件来启动节点，运行方式加上 `--execution wasm` , 那他们就是以这个json文件中的 `runtime.system.code` 来运行业务逻辑的。
 
 3. Mac上启动节点：
 ```
@@ -485,7 +485,7 @@ Idle (1 peers), best: #0 (0xd72d…1da7), finalized #0 (0xee92…f150), ⬇ 0.2k
 节点启动后，他们还没有插入 key，无法完成出块和达到固化的共识。我们使用 `curl` 插入key，因为2台电脑在同一个局域网，能通信，我们直接在一台电脑上，向2个节点提交RPC数据
 
 ```
-# 向 Windows节点插入auro的key，使用了助记词和使用sr25519编码的hex格式的Public key (hex)公钥地址用于 curl 做 RPC 调用向节点插入数据
+# 向 Windows节点插入aura的key，使用了助记词和使用sr25519编码的hex格式的Public key (hex)公钥地址用于 curl 做 RPC 调用向节点插入数据
 curl http://192.168.0.101:9933 -H "Content-Type:application/json;charset=utf-8" -d \
                '{
                  "jsonrpc":"2.0",
@@ -511,7 +511,7 @@ curl http://192.168.0.101:9933 -H "Content-Type:application/json;charset=utf-8" 
     ]
  }'
 
-# 向Mac节点插入auro的key，使用了助记词和使用sr25519编码的hex格式的Public key (hex)公钥地址用于 curl 做 RPC 调用向节点插入数据
+# 向Mac节点插入aura的key，使用了助记词和使用sr25519编码的hex格式的Public key (hex)公钥地址用于 curl 做 RPC 调用向节点插入数据
 curl http://192.168.0.100:9933 -H "Content-Type:application/json;charset=utf-8" -d \
                '{
                  "jsonrpc":"2.0",
@@ -552,7 +552,7 @@ Idle (1 peers), best: #10 (0xfc8f…1874), finalized #8 (0xd7e9…2dd0), ⬇ 1.5
 
 如果大家在自己尝试的过程中发现无法出块或无法固化区块，需要检查几个地方，
 1. `chain-spec` 文件是否是同一份文件，如果使用 `local_raw.json` 一直无法出块，则可以使用 `local.json` 来试一试，或者从Mac端生成这2个文件，拷贝到Windows端，毕竟从Mac端生成就不需要改文件编码，有时候稍稍的小改动可能会导致2个节点无法组网。
-2. 检查 `auro` 和 `grandpa` 的key对不对，很多情况下是这2个key不对导致的。停止程序运行，然后删除`windata` 和 `macdata` 2个目录，重新执行插入key的操作，这个过程中需要反复检查key是否正确。
+2. 检查 `aura` 和 `grandpa` 的key对不对，很多情况下是这2个key不对导致的。停止程序运行，然后删除`windata` 和 `macdata` 2个目录，重新执行插入key的操作，这个过程中需要反复检查key是否正确。
 
 大家可能有疑问，插入key后，为什么需要特别的重启程序才能达到固化区块的目的。这是因为[substrate-node-template](https://github.com/substrate-developer-hub/substrate-node-template/tree/monthly-2021-12)是一个极简区块链Demo，它还缺少一个 `Pallet` 来实现自动的key管理。有了这个Pallet，我们就不需要这么麻烦的使用`subkey`来生成key，也不需要执行繁琐的且容易出错的插入key操作。只需要鼠标轻轻点点就可以达到不需要重启就让链能出块和达到共识。后面有机会我们再来介绍这个神奇的`Pallet`吧！
 
