@@ -11,9 +11,9 @@
 2. 安装 Visual C++ 编译工具，注意要选中 `Windows 10 SDK` ，笔者选的几个组件最重要的Win10 SDK，其他的clang，cmake都不需要安装，参考图片是：
 ![vs_build_tools](./vs_build_tools.png)
 
-3. 安装 `Rust` 工具链，这个是最简单的了。到 https://www.rust-lang.org/tools/install . 选择下载Windows的64位安装包。一切都默认安装，安装Rust过程中会提示你安装在那个目录，我们选 "1) Default Installation."，安装完成后，`%USERPROFILE%\.cargo\bin`  是rust Cargo的bin目录。安装完成后，可以关闭命令行，再重新重新打开，使得 `rustup`、`rustc`、`cargo` 命令能被新命令行终端找到。
+1. 安装 `Rust` 工具链，到 https://www.rust-lang.org/tools/install . 选择下载Windows的64位安装包。一切都默认安装，安装Rust过程中会提示你安装在那个目录，我们选 "1) Default Installation."，安装完成后，`%USERPROFILE%\.cargo\bin`  是rust Cargo的bin目录。安装完成后，可以关闭命令行，再重新重新打开，使得 `rustup`、`rustc`、`cargo` 命令能被新命令行终端找到。
 
-4. 逐一运行
+2. 开启 `powershell` 或 `cmd` 命令行终端，运行终端命令行，在命令行中逐一输入以下命令：
 
 ```
 rustup update nightly
