@@ -547,13 +547,13 @@ Idle (1 peers), best: #1 (0xd72d…1da7), finalized #0 (0xee92…f150), ⬇ 0.2k
 Idle (1 peers), best: #10 (0xfc8f…1874), finalized #8 (0xd7e9…2dd0), ⬇ 1.5kiB/s ⬆ 1.6kiB/s
 ```
 
-到这里，大功告成。我们完成了演示 如何在windows上编译Substrate并用Windows程序组成一个私有的网络。如下图：
+到这里，大功告成。我们完成了演示 如何在windows上编译Substrate并用Windows程序组成一个私有的网络。如下图，他们在欢快地出块：
 ![run-2-nodes-successful](./run-2-nodes-success.png)
 
-如果大家在自己尝试的过程中发现无法出块或无法固化区块，需要检查几个地方，
-1. `chain-spec` 文件是否是同一份文件，如果使用 `local_raw.json` 一直无法出块，则可以使用 `local.json` 来试一试，或者从Mac端生成这2个文件，拷贝到Windows端，毕竟从Mac端生成就不需要改文件编码，有时候稍稍的小改动可能会导致2个节点无法组网。
+如果大家在自己尝试的过程中发现无法出块或无法固化(finalize)区块，需要检查几个地方，
+1. `chain-spec` 文件是否是同一份文件，如果使用 `local_raw.json` 一直无法出块或是无法相互发现并链接到同一个链，则可以使用 `local.json` 来试一试，或者从Mac端生成这2个文件，拷贝到Windows端，毕竟从Mac端生成就不需要改文件编码，有时候稍稍的小改动可能会导致2个节点无法组网。
 2. 检查 `aura` 和 `grandpa` 的key对不对，很多情况下是这2个key不对导致的。停止程序运行，然后删除`windata` 和 `macdata` 2个目录，重新执行插入key的操作，这个过程中需要反复检查key是否正确。
 
-大家可能有疑问，插入key后，为什么需要特别的重启程序才能达到固化区块的目的。这是因为[substrate-node-template](https://github.com/substrate-developer-hub/substrate-node-template/tree/monthly-2021-12)是一个极简区块链Demo，它还缺少一个 `Pallet` 来实现自动的key管理。有了这个Pallet，我们就不需要这么麻烦的使用`subkey`来生成key，也不需要执行繁琐的且容易出错的插入key操作。只需要鼠标轻轻点点就可以达到不需要重启就让链能出块和达到共识。后面有机会我们再来介绍这个神奇的`Pallet`吧！
+大家可能有疑问，插入key后，为什么需要特别的重启程序才能达到固化区块的目的。这是因为[substrate-node-template](https://github.com/substrate-developer-hub/substrate-node-template/tree/monthly-2021-12)是一个极简区块链Demo，它还缺少一个 `Pallet` 来实现自动的key管理。如果添加了这个Pallet，我们就不需要这么麻烦的使用`subkey`来生成key，也不需要执行繁琐的且容易出错的插入key操作。只需要鼠标轻轻点点就可以达到不需要重启就让链能出块和完成共识。后面有机会我们再来介绍这个神奇的`Pallet`吧！
 
 
