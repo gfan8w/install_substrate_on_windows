@@ -275,7 +275,7 @@ error: build failed
 比如上面问题，因为360把某些文件当做病毒，拒绝写入导致编译失败，当把360杀毒和卫士都关闭后，继续重新编译。最后在机器的轰鸣声中成功完成编译。
 
 
-![compile-successfully](./compile-successfully.png)
+![compile-successfully](./compile-successfully-screen.png)
 
 看见这个美妙的`Finished`，总不枉费一番折腾！可以看看编译的时候的CPU都拉到100%！
 
