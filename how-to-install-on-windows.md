@@ -22,10 +22,8 @@ rustup update stable
 
 rustup target add wasm32-unknown-unknown --toolchain nightly
 ```
-安装完成后，执行
+安装完成后，执行 `rustup show` 查看 rust 安装是否正确。
 ```
-rustup show
-
 Default host: x86_64-pc-windows-msvc
 rustup home:  C:\Users\P50\.rustup
 
@@ -41,8 +39,6 @@ active toolchain
 stable-x86_64-pc-windows-msvc (default)
 rustc 1.60.0 (7737e0b5c 2022-04-04)
 ```
-查看 rust 安装是否正确。
-
 
 
 5. 从 https://releases.llvm.org/download.html 下载 LLVM，并安装，笔者从 [这里](https://github.com/llvm/llvm-project/releases/download/llvmorg-14.0.0/LLVM-14.0.0-win64.exe) 下载了`LLVM-14.0.0-win64.exe` 并安装，安装过程中 `把LLVM 命令加入到系统System的PATH环境变量中去，所有用户适用` ，其他步骤都是使用默认值，参考如图：![add_to_system_path_to_all_user](./add_to_system_path_to_all_user.png)
