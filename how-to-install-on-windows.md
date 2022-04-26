@@ -1,4 +1,4 @@
-# 在Windows平台编译Substrate
+# 在Windows平台编译Substrate (How to compile and run Substrate on Windows)
 
 
 本文将演示如何在Windows平台编译 [Substrate](https://substrate.io/) ，并运行 [substrate-node-template](https://github.com/substrate-developer-hub/substrate-node-template/tree/monthly-2021-12) 组成的一个私有网络。本次使用的 node-template 分支是 `tag：monthly-2021-12` 。 Windows操作系统用的Win10。 
