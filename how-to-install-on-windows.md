@@ -551,7 +551,8 @@ Idle (1 peers), best: #1 (0xd72d…1da7), finalized #0 (0xee92…f150), ⬇ 0.2k
 Idle (1 peers), best: #10 (0xfc8f…1874), finalized #8 (0xd7e9…2dd0), ⬇ 1.5kiB/s ⬆ 1.6kiB/s
 ```
 
-到这里，大功告成。我们完成了演示 如何在windows上编译Substrate并用Windows程序组成一个私有的网络。
+到这里，大功告成。我们完成了演示 如何在windows上编译Substrate并用Windows程序组成一个私有的网络。如下图：
+![run-2-nodes-successful](./run-2-nodes-success.png)
 
 如果大家在自己尝试的过程中发现无法出块或无法固化区块，需要检查几个地方，
 1. `chain-spec` 文件是否是同一份文件，如果使用 `local_raw.json` 一直无法出块，则可以使用 `local.json` 来试一试，或者从Mac端生成这2个文件，拷贝到Windows端，毕竟从Mac端生成就不需要改文件编码，有时候稍稍的小改动可能会导致2个节点无法组网。
